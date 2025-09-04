@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Journal History</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <div class="page-container">
+        <header class="app-header">
+            <!-- Link to go back to the journal entry page -->
+            <a href="/journal" class="back-link">← Back to Journal</a>
+            <h2>Journal History</h2>
+        </header>
+
+        <div class="journal-history-list">
+            {% for entry in entries %}
+                <div class="journal-entry">
+                    <!-- Format the timestamp to be readable -->
+                    <div class="entry-timestamp">
+                        {{ entry.timestamp.strftime('%B %d, %Y at %I:%M %p') }}
+                    </div>
+                    <div class="entry-text">
+                        {{ entry.entry_text }}
+                    </div>
+                </div>
+            {% else %}
+                <div class="no-entries">
+                    <p>You haven't written any journal entries yet.</p>
+                    <p>Your saved entries will appear here.</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

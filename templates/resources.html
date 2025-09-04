@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mental Health Resources</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <div class="page-container">
+        <h2>Helpful Resources</h2>
+        <p class="subtitle">Here are some trusted organizations and articles that can provide further support and information.</p>
+        <ul class="resources-list">
+            {% for resource in resources %}
+                <!-- Added rel attribute for security -->
+                <li><a href="{{ resource.url }}" target="_blank" rel="noopener noreferrer">{{ resource.name }}</a></li>
+            {% else %}
+                <li>No resources are available at the moment.</li>
+            {% endfor %}
+        </ul>
+        <a href="/" class="back-link">← Back to Home</a>
+    </div>
+</body>
+</html>

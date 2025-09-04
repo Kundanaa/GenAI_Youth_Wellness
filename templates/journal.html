@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mood Journal</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <div class="page-container">
+        <header class="app-header">
+            <a href="/" class="back-link">← Home</a>
+            <h2>Mood Journal</h2>
+            <!-- NEW LINK to the history page -->
+            <a href="/journal/history" class="header-action-link">View History</a>
+        </header>
+
+        <p class="subtitle">Take a moment to write down your thoughts and feelings. This is a private space just for you.</p>
+        
+        <form id="journal-form" onsubmit="saveEntry(event)">
+            <textarea id="entry" rows="8" placeholder="How are you feeling today? What's on your mind?"></textarea><br>
+            <button type="submit" class="btn-primary">Save Entry</button>
+        </form>
+        <div id="status"></div>
+    </div>
+
+    <script>
+        async function saveEntry(event) {
+            event.preventDefault();
+            const entryInput = document.getElementById("entry");
+            const statusDiv = document.getElementById("status");
+            const entry = entryInput.value.trim();
+            
+            if (entry === "") {
+                statusDiv.innerText = "Please write something before saving.";
+                statusDiv.className = 'status-error';
+                return;
+            }
+
+            statusDiv.innerText = "Saving...";
+            statusDiv.className = 'status-saving';
+
+            try {
+                const response = await fetch("/journal", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    body: "entry=" + encodeURIComponent(entry)
+                });
+
+                if (!response.ok) throw new Error('Network response was not ok');
+
+                const data = await response.json();
+                statusDiv.innerText = "Saved successfully at " + data.timestamp;
+                statusDiv.className = 'status-success';
+                entryInput.value = "";
+            
+            } catch (error) {
+                console.error("Error saving entry:", error);
+                statusDiv.innerText = "Failed to save. Please try again.";
+                statusDiv.className = 'status-error';
+            }
+        }
+    </script>
+</body>
+</html>
+
+
